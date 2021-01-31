@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import Axios from 'axios';
 
@@ -11,6 +11,8 @@ function App() {
     const [passwordLog, setPasswordLog] = useState('')
 
     const [loginStatus, setLoginStatus] = useState('')
+
+    Axios.defaults.withCredentials = true;
 
     const register = () =>{
         Axios.post("http://localhost:3001/register", {username: usernameReg, password: passwordReg}).then((response)=>{
@@ -29,6 +31,19 @@ function App() {
             
         });
     }
+
+    //runs every time we reload our page
+    useEffect(() => {
+       Axios.get("http://localhost:3001/login").then((response)=>{
+           console.log(response);
+           if(response.data.loggedIn == true){
+            setLoginStatus(response.data.user[0].username)
+           }
+           
+       })
+    }, [])
+
+
     return (
     <div className="App" >
         <div className="registration">
