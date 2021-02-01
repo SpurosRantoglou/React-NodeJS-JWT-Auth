@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,800;1,700&display=swap");
+
 .App {
   text-align: center;
 }
@@ -26,6 +28,24 @@
 
 .App-link {
   color: #61dafb;
+}
+.btn {
+  font-size: 1.2rem;
+  padding: 12px 32px;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  background-color: #3498db;
+  transition: all 250ms ease-in-out;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #2386c8;
+}
+
+.btn:focus {
+  outline: none;
 }
 
 @keyframes App-logo-spin {

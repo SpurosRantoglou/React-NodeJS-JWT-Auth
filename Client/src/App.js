@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import Axios from 'axios';
+import {Login} from "./components/signIn/index"
 
 function App() {
 
@@ -76,6 +77,8 @@ function App() {
             <button onClick={login}>Login</button>
         </div>
         <h1>{loginStatus}</h1>
+
+        <Login/>
 
     </div>
     );
