@@ -10,7 +10,7 @@ function App() {
     const [usernameLog, setUsernameLog] = useState('')
     const [passwordLog, setPasswordLog] = useState('')
 
-    const [loginStatus, setLoginStatus] = useState('')
+    const [loginStatus, setLoginStatus] = useState(false)
 
     Axios.defaults.withCredentials = true;
 
@@ -21,12 +21,13 @@ function App() {
     }
 
     const login = () =>{
-        Axios.post("http://localhost:3001/login", {username: usernameLog, password: passwordLog}).then((response)=>{
-            if(response.data.message){
-                setLoginStatus(response.data.message)
+        Axios.post("https://localhost:3001/login", {username: usernameLog, password: passwordLog}).then((response)=>{
+            if(!response.data.auth){
+                setLoginStatus(false)
             }
             else{
-                setLoginStatus(response.data[0].username)
+                console.log(response.data)
+                setLoginStatus(true)
             }
             
         });
@@ -37,7 +38,7 @@ function App() {
        Axios.get("http://localhost:3001/login").then((response)=>{
            console.log(response);
            if(response.data.loggedIn == true){
-            setLoginStatus(response.data.user[0].username)
+            setLoginStatus(true)
            }
            
        })

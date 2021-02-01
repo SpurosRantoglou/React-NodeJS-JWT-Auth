@@ -3,7 +3,7 @@ const app = express();
 const mysql = require('mysql');
 const cors = require('cors');
 
-const e = require('express');
+const jwt = require('jsonwebtoken');
 
 //Hashing
 const bcrypt = require('bcrypt');
@@ -91,8 +91,17 @@ app.post('/login', (req, res)=>{
                 if(response){
                     
                     req.session.user = result
+
+
+
+                    const id = result[0].id
+                    const token = jwt.sign({id}, "jwtSecret", {
+                        expiresIn: 300,
+                    })
+
+
                     console.log(req.session.user)
-                    res.send(result)    
+                    res.json({auth: true, token: token, result: result})
                 }else{
                     res.send({message: "Wrong username and password combination"})
                 }   
@@ -112,6 +121,26 @@ app.get('/login', (req,res)=>{
     }else{
         res.send({loggedIn: false, user: req.session.user})
     }
+})
+
+const verifyJWT = (req, res, next)=>{
+    const token = req.headers["x-access-token"]
+    if(!token){
+        res.send("No token found")
+    }else{
+        jwt.verify(token, "jwtSecret", (err, decoded)=>{
+            if(err){
+                res.send({auth: false, message: "Failed to authenticate with token"})
+            }else{
+                req.userId = decoded.id;
+                next();
+            }
+        })
+    }
+}
+
+app.get('/userAuth',verifyJWT,(req,res)=>{
+    res.send("You are authenticated")
 })
 
 
